@@ -1,0 +1,17 @@
+<section class="book-container">
+    <nav>
+        <div *ngIf="hasPreviousBook()">
+            <button [routerLink]="getPreviousBook()">voriges Buch</button>
+        </div>
+        <h2>Buch {{ book.id }}</h2>
+        <div *ngIf="hasNextBook()">
+            <button [routerLink]="getNextBook()">nächstes Buch</button>
+        </div>
+    </nav>
+
+    <div class="content">
+        <p>Titel: {{ book.title }}</p>
+        <p>Autor/in: {{ book.author }}</p>
+        <p>Erscheinungsjahr: {{ book.year }}</p>
+    </div>
+</section>
