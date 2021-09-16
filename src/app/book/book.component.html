@@ -14,4 +14,15 @@
         <p>Autor/in: {{ book.author }}</p>
         <p>Erscheinungsjahr: {{ book.year }}</p>
     </div>
+
+    <div class="reviews-container">
+        <h4>Rezensionen:</h4>
+        <form #form="ngForm" (ngSubmit)="onReviewSubmit(form)">
+            <textarea ngModel name="reviewText" placeholder="Meine Rezension..."></textarea>
+            <button type="submit">Abschicken</button>
+        </form>
+        <div *ngFor="let review of currentBookReviews; index as indexOfReview">
+            <p>Rez. {{ indexOfReview + 1 }}: <em>{{ review.text }}</em></p>
+        </div>
+    </div>
 </section>

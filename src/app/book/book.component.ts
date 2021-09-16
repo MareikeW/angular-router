@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { NgForm } from '@angular/forms';
+import { Review } from './review.model';
+
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
@@ -11,6 +14,9 @@ export class BookComponent implements OnInit {
   nextBook: string = "";
   previousBook: string = "";
 
+  allReviews: Review[] = [];
+  currentBookReviews: Review[] = [];
+
   constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -20,6 +26,14 @@ export class BookComponent implements OnInit {
       this.book.author = data.author;
       this.book.year = data.year;
     })
+
+    this.allReviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+
+    for (let i = 0; i < this.allReviews.length; i++) {
+      if (this.allReviews[i].bookTitle === this.book.title) {
+        this.currentBookReviews.push(this.allReviews[i]);
+      }
+    }
   }
 
   hasNextBook() {
@@ -52,5 +66,19 @@ export class BookComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  /* neu */
+  onReviewSubmit(form: NgForm) {
+    if (form.value.reviewText) {
+      this.addReview(new Review(this.book.title, form.value.reviewText))
+    }
+  }
+
+  addReview(review: Review) {
+    this.currentBookReviews.push(review);
+    this.allReviews.push(review);
+    let jsonAllReviews = JSON.stringify(this.allReviews);
+    localStorage.setItem('reviews', jsonAllReviews);
   }
 }
